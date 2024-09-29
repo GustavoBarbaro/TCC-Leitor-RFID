@@ -1,15 +1,27 @@
 #include <Arduino.h>
 #include "botoes.h"
 #include "menu.h"  // menu.h já declara extern lcd e a função de inicialização do display
-
-#include <SPI.h>
+#include "RFID_Reader.h" //já declara a biblioteca e inicia o rfid
 
 void setup() {
-    inicializar_display();  // Agora inicializa o LCD através da função modularizada
+
+    Serial.begin(9600);
+
+    inicializar_display();
     configurar_botoes();
+
+    RFIDReader_Init();
 }
 
 void loop() {
+
+
+    unsigned long cardID = RFIDReader_ReadCardID(); // Lê o ID do cartão
+
+    if (cardID > 0) {
+        Serial.println(cardID); // Exibe o ID no monitor serial
+    }
+
 
     ler_botoes();
 
