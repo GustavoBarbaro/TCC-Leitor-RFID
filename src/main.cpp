@@ -2,6 +2,7 @@
 #include "botoes.h"
 #include "menu.h"  // menu.h já declara extern lcd e a função de inicialização do display
 #include "RFID_Reader.h" //já declara a biblioteca e inicia o rfid
+#include "wifiLib.h"
 
 void setup() {
 
@@ -11,9 +12,15 @@ void setup() {
     configurar_botoes();
 
     RFIDReader_Init();
+    wifi_Init();
 }
 
 void loop() {
+
+
+    busca_idProduto();
+
+
 
 
     unsigned long cardID = RFIDReader_ReadCardID(); // Lê o ID do cartão
