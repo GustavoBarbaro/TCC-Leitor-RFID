@@ -2,8 +2,8 @@
 #define SENHA_H
 
 
-const char* ssid = "SEU_SSID";
-const char* password = "SUA_SENHA";
+#define ssid "SEU_SSID"
+#define password "SUA_SENHA"
 
 
 #endif
