@@ -11,6 +11,6 @@
 #define MAX_BYTE 7
 
 void RFIDReader_Init();
-unsigned long RFIDReader_ReadCardID();
+String RFIDReader_ReadCardID();
 
 #endif

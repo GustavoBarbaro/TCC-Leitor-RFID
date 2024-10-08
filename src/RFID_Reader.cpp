@@ -10,26 +10,29 @@ void RFIDReader_Init() {
     rfid.PCD_Init(); // Inicializa o MFRC522
 }
 
-unsigned long RFIDReader_ReadCardID() {
+String RFIDReader_ReadCardID() {
     // Verifica se há um novo cartão presente
     if (!rfid.PICC_IsNewCardPresent()) {
-        return 0; // Retorna 0 se não houver cartão
+        return ""; // Retorna string vazia se não houver cartão
     }
 
     // Lê o cartão
     if (!rfid.PICC_ReadCardSerial()) {
-        return 0; // Retorna 0 se não conseguir ler
+        return ""; // Retorna string vazia se não conseguir ler
     }
 
-    // Constrói o ID do cartão
-    cardID = 0;
+    // Constrói o ID do cartão como uma string hexadecimal
+    String cardID = "";
     for (byte i = 0; i < rfid.uid.size; i++) {
-        cardID = (cardID << 8) | rfid.uid.uidByte[i]; // Concatena os bytes do UID
+        if (rfid.uid.uidByte[i] < 0x10) {
+            cardID += "0"; // Adiciona zero à esquerda se necessário
+        }
+        cardID += String(rfid.uid.uidByte[i], HEX); // Concatena os bytes em hexadecimal
     }
 
     // Para o cartão e interrompe a criptografia
     rfid.PICC_HaltA();
     rfid.PCD_StopCrypto1();
 
-    return cardID; // Retorna o ID do cartão
+    return cardID; // Retorna o ID do cartão em hexadecimal
 }
