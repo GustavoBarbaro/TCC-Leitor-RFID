@@ -10,7 +10,7 @@
 
 void wifi_Init();
 
-void busca_idProduto();
+void busca_id(String tag, int escolha);
 
 
 #endif

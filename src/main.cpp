@@ -18,16 +18,13 @@ void setup() {
 void loop() {
 
 
-    busca_idProduto();
+    /* String cardID = RFIDReader_ReadCardID(); // Lê o ID do cartão e armazena na variável
 
-
-
-
-    unsigned long cardID = RFIDReader_ReadCardID(); // Lê o ID do cartão
-
-    if (cardID > 0) {
-        Serial.println(cardID); // Exibe o ID no monitor serial
-    }
+    // Verifica se algum cartão foi lido
+    if (cardID != "") {
+        Serial.print("Card UID: ");
+        Serial.println(cardID); // Exibe o ID do cartão no monitor serial
+    } */
 
 
     ler_botoes();

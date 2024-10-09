@@ -20,18 +20,25 @@ void wifi_Init(){
     Serial.println("Conectado ao WiFi");
 }
 
-void busca_idProduto(){
+void busca_id(String tag, int escolha){
+
 
     if (WiFi.status() == WL_CONNECTED){
         HTTPClient http;
 
-        // http.begin("http://192.168.1.124:8000/api/produto/buscar/"); // Substitua pelo IP correto da máquina
-        http.begin("http://127.0.0.1:8000/api/produto/buscar/"); // Substitua pelo IP correto da máquina
+        if (escolha == 1){
+            http.begin("http://192.168.1.124:8000/api/produto/buscar/");
+
+        } else if (escolha == 2){
+            http.begin("http://192.168.1.124:8000/api/usuario/buscar/");
+        }
+        
+
         http.addHeader("Content-Type", "application/json");      // Cabeçalho da requisição
 
         // Corpo da requisição com a tag RFID
 
-        String requestBody = "{\"tag_rfid\":\"123\"}";
+        String requestBody = "{\"tag_rfid\":\"" + tag + "\"}";
 
         int httpResponseCode = http.POST(requestBody);
 
@@ -48,5 +55,4 @@ void busca_idProduto(){
         http.end();
     }
 
-    delay(10000); // Aguarda 10 segundos antes de enviar nova requisição
 }

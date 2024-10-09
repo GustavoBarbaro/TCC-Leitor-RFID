@@ -1,12 +1,18 @@
+#include <Arduino.h>
 #include "menu.h"
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include "RFID_Reader.h"
+#include "wifiLib.h"
 
 // Inicializa o objeto lcd
 LiquidCrystal_I2C lcd(0x27, 20, 4);  
 
 int menu_num = 1;
 int sub_menu = 1;
+
+String tagLida = "";
+
 
 void inicializar_display() {
     lcd.init();  // Inicializa o LCD
@@ -43,6 +49,24 @@ void Cadastrar_Produto() {
             lcd.print("Aguardando      ");
             lcd.setCursor(0, 1);
             lcd.print("      leitura...");
+
+            //ler a tag
+            //delay para dar tempo da pessoa posicionar o leitor
+            delay(3000);
+            tagLida = "";
+            tagLida = RFIDReader_ReadCardID();
+
+            Serial.println(tagLida);
+            
+            // wifi consultar tag
+            busca_id(tagLida, 1);
+
+
+
+
+
+
+            sub_menu -=1;
             break;
     }
 }

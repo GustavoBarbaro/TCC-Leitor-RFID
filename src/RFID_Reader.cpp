@@ -11,6 +11,7 @@ void RFIDReader_Init() {
 }
 
 String RFIDReader_ReadCardID() {
+
     // Verifica se há um novo cartão presente
     if (!rfid.PICC_IsNewCardPresent()) {
         return ""; // Retorna string vazia se não houver cartão

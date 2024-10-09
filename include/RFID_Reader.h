@@ -10,6 +10,9 @@
 
 #define MAX_BYTE 7
 
+
+
+
 void RFIDReader_Init();
 String RFIDReader_ReadCardID();
 
