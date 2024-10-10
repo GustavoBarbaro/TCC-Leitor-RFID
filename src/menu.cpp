@@ -11,7 +11,7 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
 int menu_num = 1;
 int sub_menu = 1;
 
-String tagLida = "";
+String tagLida = "", idProduto = "", idUsuario = "";
 
 
 void inicializar_display() {
@@ -32,6 +32,50 @@ void Ler_Usuario() {
             lcd.print("Aguardando      ");
             lcd.setCursor(0, 1);
             lcd.print("      leitura...");
+
+
+
+
+            delay(900);
+            tagLida = "";
+            tagLida = RFIDReader_ReadCardID();
+
+            
+            // wifi consultar tag
+            idUsuario = busca_id(tagLida, 2);
+
+            Serial.println(idUsuario);
+
+            //preciso ver se ele achou o usuario ou não
+            if (idUsuario == "\"Usuario nao encontrado\""){
+                lcd.setCursor(0, 0);
+                lcd.print("Usuario         ");
+                lcd.setCursor(0, 1);
+                lcd.print("Desconhecido !  ");
+            } else if (idUsuario == "\"Formato JSON invalido\"" || idUsuario == "\"Campo tag_rfid nao fornecido\""){
+                lcd.setCursor(0, 0);
+                lcd.print("Erro na leitura!");
+                lcd.setCursor(0, 1);
+                lcd.print("                ");
+            }else {
+                lcd.setCursor(0, 0);
+                lcd.print("Usuario lido com");
+                lcd.setCursor(0, 1);
+                lcd.print("Sucesso !       ");
+            }
+
+
+
+
+
+
+
+            
+            delay(3000);
+
+
+
+            sub_menu -=1;
             break;
     }
 }
@@ -52,14 +96,15 @@ void Cadastrar_Produto() {
 
             //ler a tag
             //delay para dar tempo da pessoa posicionar o leitor
-            delay(3000);
+            delay(900);
             tagLida = "";
             tagLida = RFIDReader_ReadCardID();
 
-            Serial.println(tagLida);
             
             // wifi consultar tag
-            busca_id(tagLida, 1);
+            idProduto = busca_id(tagLida, 1);
+
+            
 
 
 

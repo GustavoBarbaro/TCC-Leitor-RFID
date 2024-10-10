@@ -7,7 +7,7 @@
 extern LiquidCrystal_I2C lcd;  // Declaração de lcd
 
 extern int menu_num, sub_menu;
-extern String tagLida;
+extern String tagLida, idProduto, idUsuario;
 
 #define menu_max 4  // Número máximo de menus existentes
 

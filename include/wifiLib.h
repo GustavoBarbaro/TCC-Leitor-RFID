@@ -10,7 +10,9 @@
 
 void wifi_Init();
 
-void busca_id(String tag, int escolha);
+String busca_id(String tag, int escolha);
+
+String extractNumber(String jsonString);
 
 
 #endif

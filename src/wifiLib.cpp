@@ -20,16 +20,15 @@ void wifi_Init(){
     Serial.println("Conectado ao WiFi");
 }
 
-void busca_id(String tag, int escolha){
-
+String busca_id(String tag, int escolha){
 
     if (WiFi.status() == WL_CONNECTED){
         HTTPClient http;
 
-        if (escolha == 1){
+        if (escolha == 1){ //produto
             http.begin("http://192.168.1.124:8000/api/produto/buscar/");
 
-        } else if (escolha == 2){
+        } else if (escolha == 2){ //usuario
             http.begin("http://192.168.1.124:8000/api/usuario/buscar/");
         }
         
@@ -44,15 +43,33 @@ void busca_id(String tag, int escolha){
 
         if (httpResponseCode > 0){
             String response = http.getString(); // Resposta do servidor
-            Serial.println(httpResponseCode);
-            Serial.println(response);
+            // Serial.println(httpResponseCode);
+            // Serial.println(response);
+            http.end();
+            return extractNumber(response);
         }
         else{
-            Serial.print("Erro na requisição: ");
-            Serial.println(httpResponseCode);
+            // Serial.print("Erro na requisição: ");
+            // Serial.println(httpResponseCode);
+            http.end();
+            return "Erro na requisicao";
         }
-
-        http.end();
+    } else {
+        return "Nao conectado ao WIFI";
     }
 
+}
+
+
+String extractNumber(String jsonString) {
+    //Esse codigo eh util para extrair toda a resposta do http
+
+    // Localiza a posição do ":" e da "}"
+    int startIndex = jsonString.indexOf(":") + 2; // +2 para pular o ":" e o espaço
+    int endIndex = jsonString.indexOf("}");
+
+    // Extrai a parte numérica da string
+    String number = jsonString.substring(startIndex, endIndex);
+
+    return number;
 }
