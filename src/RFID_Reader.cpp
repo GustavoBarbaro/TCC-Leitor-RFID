@@ -13,8 +13,12 @@ void RFIDReader_Init() {
 String RFIDReader_ReadCardID() {
 
     // Verifica se há um novo cartão presente
-    if (!rfid.PICC_IsNewCardPresent()) {
+    /* if (!rfid.PICC_IsNewCardPresent()) {
         return ""; // Retorna string vazia se não houver cartão
+    } */
+
+    while (!rfid.PICC_IsNewCardPresent()) {
+        delay(100);  // Evita loop excessivo e economiza CPU
     }
 
     // Lê o cartão

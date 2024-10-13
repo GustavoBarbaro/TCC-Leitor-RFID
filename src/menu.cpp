@@ -36,7 +36,7 @@ void Ler_Usuario() {
             lcd.print("      leitura...");
 
 
-            delay(900);
+            //delay(900);
             tagLida = "";
             tagLida = RFIDReader_ReadCardID();
 
@@ -64,16 +64,7 @@ void Ler_Usuario() {
                 erro_Usuario = 1;
             }
 
-
-
-
-
-
-
-            
             delay(3000);
-
-
 
             sub_menu -=1;
             break;
@@ -90,79 +81,7 @@ void Cadastrar_Produto() {
             break;
         case 2:
             
-            if(erro_Usuario == 0){
-                lcd.setCursor(0, 0);
-                lcd.print("Leia Usuario    ");
-                lcd.setCursor(0, 1);
-                lcd.print("Primeiro !      ");
-                delay(3000);
-                sub_menu -=1;
-
-            } else {
-                lcd.setCursor(0, 0);
-                lcd.print("Aguardando      ");
-                lcd.setCursor(0, 1);
-                lcd.print("      leitura...");
-
-                //ler a tag
-                //delay para dar tempo da pessoa posicionar o leitor
-                delay(900);
-                tagLida = "";
-                tagLida = RFIDReader_ReadCardID();
-
-                
-                // wifi consultar tag
-                idProduto = busca_id(tagLida, 1);
-
-                
-                //preciso ver se ele achou o produto ou não
-                if (idProduto == "\"Produto nao encontrado\""){
-                    lcd.setCursor(0, 0);
-                    lcd.print("Produto         ");
-                    lcd.setCursor(0, 1);
-                    lcd.print("Desconhecido !  ");
-                } else if (idProduto == "\"Formato JSON invalido\"" || idProduto == "\"Campo tag_rfid nao fornecido\""){
-                    lcd.setCursor(0, 0);
-                    lcd.print("Erro na leitura!");
-                    lcd.setCursor(0, 1);
-                    lcd.print("                ");
-
-                }else {
-                    //achou o ID do produto e do usuario, pode cadastrar
-                    movimentacao = cria_movimentacao (idUsuario, idProduto, "Entrada");
-
-                    //Analisar as respostas
-                    if (movimentacao == "\"O Produto ja esta no estoque\""){
-                        lcd.setCursor(0, 0);
-                        lcd.print("Produto no      ");
-                        lcd.setCursor(0, 1);
-                        lcd.print("Estoque         ");
-                    } else if (movimentacao == "\"O Produto nao esta no estoque\"") {
-                        lcd.setCursor(0, 0);
-                        lcd.print("Produto fora do ");
-                        lcd.setCursor(0, 1);
-                        lcd.print("Estoque         ");
-                    } else if (movimentacao == "\"Movimentacao criada com sucesso\"") {
-                        lcd.setCursor(0, 0);
-                        lcd.print("Cadastrado com  ");
-                        lcd.setCursor(0, 1);
-                        lcd.print("Sucesso !       ");
-                    }
-                    
-
-                }
-
-
-
-                delay(3000);
-
-                sub_menu -=1;
-            }
-
-
-
-
-
+            Baixa_ou_Cadastra("Cadastrar");
 
             break;
     }
@@ -177,10 +96,9 @@ void Baixa_Produto() {
             lcd.print("    Produto    >");
             break;
         case 2:
-            lcd.setCursor(0, 0);
-            lcd.print("Aguardando      ");
-            lcd.setCursor(0, 1);
-            lcd.print("      leitura...");
+            
+            Baixa_ou_Cadastra("Baixa");
+
             break;
     }
 }
@@ -199,5 +117,89 @@ void Reset() {
             lcd.setCursor(0, 1);
             lcd.print("      leitura...");
             break;
+    }
+}
+
+
+void Baixa_ou_Cadastra (String tipo){
+
+    if(erro_Usuario == 0){
+        lcd.setCursor(0, 0);
+        lcd.print("Leia Usuario    ");
+        lcd.setCursor(0, 1);
+        lcd.print("Primeiro !      ");
+        delay(3000);
+        sub_menu -=1;
+
+    } else {
+        lcd.setCursor(0, 0);
+        lcd.print("Aguardando      ");
+        lcd.setCursor(0, 1);
+        lcd.print("      leitura...");
+
+        //ler a tag
+        //delay para dar tempo da pessoa posicionar o leitor
+        //delay(900);
+        tagLida = "";
+        tagLida = RFIDReader_ReadCardID();
+
+        
+        // wifi consultar tag
+        idProduto = busca_id(tagLida, 1);
+
+        
+        //preciso ver se ele achou o produto ou não
+        if (idProduto == "\"Produto nao encontrado\""){
+            lcd.setCursor(0, 0);
+            lcd.print("Produto         ");
+            lcd.setCursor(0, 1);
+            lcd.print("Desconhecido !  ");
+        } else if (idProduto == "\"Formato JSON invalido\"" || idProduto == "\"Campo tag_rfid nao fornecido\""){
+            lcd.setCursor(0, 0);
+            lcd.print("Erro na leitura!");
+            lcd.setCursor(0, 1);
+            lcd.print("                ");
+
+        }else {
+            //achou o ID do produto e do usuario, pode cadastrar ou dar baixa
+
+            if (tipo == "Cadastrar"){
+                movimentacao = cria_movimentacao (idUsuario, idProduto, "Entrada"); //esse entrada e saida sao os que vao na API
+
+            } else if (tipo == "Baixa"){
+                movimentacao = cria_movimentacao (idUsuario, idProduto, "Saida");
+            }
+
+            //Analisar as respostas
+            if (movimentacao == "\"O Produto ja esta no estoque\""){
+                lcd.setCursor(0, 0);
+                lcd.print("Produto no      ");
+                lcd.setCursor(0, 1);
+                lcd.print("Estoque         ");
+
+            } else if (movimentacao == "\"O Produto nao esta no estoque\"") {
+                lcd.setCursor(0, 0);
+                lcd.print("Produto fora do ");
+                lcd.setCursor(0, 1);
+                lcd.print("Estoque         ");
+                    
+
+            } else if (movimentacao == "\"Movimentacao criada com sucesso\"") {
+                lcd.setCursor(0, 0);
+
+                if (tipo == "Cadastrar"){
+                    lcd.print("Cadastrado com  ");
+
+                } else if (tipo == "Baixa"){
+                    lcd.print("Retirado com    ");
+                }
+                lcd.setCursor(0, 1);
+                lcd.print("Sucesso !       ");
+            }
+        }
+
+        delay(3000);
+
+        sub_menu -=1;
     }
 }
