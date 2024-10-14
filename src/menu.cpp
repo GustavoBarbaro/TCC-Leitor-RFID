@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "botoes.h"
 #include "menu.h"
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
@@ -36,7 +37,6 @@ void Ler_Usuario() {
             lcd.print("      leitura...");
 
 
-            //delay(900);
             tagLida = "";
             tagLida = RFIDReader_ReadCardID();
 
@@ -49,12 +49,14 @@ void Ler_Usuario() {
                 lcd.print("Usuario         ");
                 lcd.setCursor(0, 1);
                 lcd.print("Desconhecido !  ");
+                digitalWrite(led_red, HIGH);
                 erro_Usuario = 0;
             } else if (idUsuario == "\"Formato JSON invalido\"" || idUsuario == "\"Campo tag_rfid nao fornecido\""){
                 lcd.setCursor(0, 0);
                 lcd.print("Erro na leitura!");
                 lcd.setCursor(0, 1);
                 lcd.print("                ");
+                digitalWrite(led_red, HIGH);
                 erro_Usuario = 0;
             }else {
                 lcd.setCursor(0, 0);
@@ -65,6 +67,7 @@ void Ler_Usuario() {
             }
 
             delay(3000);
+            digitalWrite(led_red, LOW);
 
             sub_menu -=1;
             break;
@@ -128,6 +131,7 @@ void Baixa_ou_Cadastra (String tipo){
         lcd.print("Leia Usuario    ");
         lcd.setCursor(0, 1);
         lcd.print("Primeiro !      ");
+        digitalWrite(led_red, HIGH);
         delay(3000);
         sub_menu -=1;
 
@@ -138,8 +142,6 @@ void Baixa_ou_Cadastra (String tipo){
         lcd.print("      leitura...");
 
         //ler a tag
-        //delay para dar tempo da pessoa posicionar o leitor
-        //delay(900);
         tagLida = "";
         tagLida = RFIDReader_ReadCardID();
 
@@ -154,11 +156,13 @@ void Baixa_ou_Cadastra (String tipo){
             lcd.print("Produto         ");
             lcd.setCursor(0, 1);
             lcd.print("Desconhecido !  ");
+            digitalWrite(led_red, HIGH);
         } else if (idProduto == "\"Formato JSON invalido\"" || idProduto == "\"Campo tag_rfid nao fornecido\""){
             lcd.setCursor(0, 0);
             lcd.print("Erro na leitura!");
             lcd.setCursor(0, 1);
             lcd.print("                ");
+            digitalWrite(led_red, HIGH);
 
         }else {
             //achou o ID do produto e do usuario, pode cadastrar ou dar baixa
@@ -202,4 +206,5 @@ void Baixa_ou_Cadastra (String tipo){
 
         sub_menu -=1;
     }
+    digitalWrite(led_red, LOW);
 }

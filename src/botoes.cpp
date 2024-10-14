@@ -9,6 +9,12 @@ void configurar_botoes() {
     pinMode(bt_l, INPUT_PULLUP);
     pinMode(bt_e, INPUT_PULLUP);
     pinMode(bt_b, INPUT_PULLUP);
+
+    pinMode(led_red, OUTPUT);
+    pinMode(led_blue, OUTPUT);
+
+    digitalWrite(led_blue, HIGH);
+    digitalWrite(led_red, LOW);
 }
 
 void ler_botoes() {

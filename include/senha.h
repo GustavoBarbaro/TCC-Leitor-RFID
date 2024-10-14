@@ -2,8 +2,8 @@
 #define SENHA_H
 
 
-#define ssid "Nome da rede wifi"
-#define password "senha"
+#define ssid "StarLord 2.4 GHz"
+#define password "mandalore123"
 
 
 #endif

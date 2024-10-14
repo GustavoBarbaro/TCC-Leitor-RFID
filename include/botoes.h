@@ -7,6 +7,9 @@
 #define bt_e 26   // botão enter
 #define bt_b 33   // botão voltar
 
+#define led_red 3 //Led vermelho
+#define led_blue 1 //Led azul
+
 extern int menu_num, sub_menu;
 
 

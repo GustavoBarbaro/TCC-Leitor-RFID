@@ -9,6 +9,11 @@
 #include "wifiLib.h"
 #include "senha.h"
 
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+extern LiquidCrystal_I2C lcd;  // Declaração de lcd
+
 void wifi_Init();
 
 String busca_id(String tag, int escolha);

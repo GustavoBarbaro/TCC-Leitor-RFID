@@ -7,10 +7,14 @@
 #include "wifiLib.h"
 #include "senha.h"
 
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
 // Configuração do servidor NTP e fuso horário
 const char* ntpServer = "pool.ntp.org";  // Servidor NTP público
 const long  gmtOffset_sec = -10800;      // Offset GMT-3 (Horário de Brasília)
 const int   daylightOffset_sec = 3600;   // Horário de verão (se aplicável)
+
 
 void wifi_Init(){
 
@@ -27,6 +31,12 @@ void wifi_Init(){
     configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 
     Serial.println("Conectado ao WiFi");
+
+    lcd.setCursor(0, 0);
+    lcd.print("Conectado ao    ");
+    lcd.setCursor(0, 1);
+    lcd.print("WIFI !          ");
+    delay(2000);
 }
 
 String busca_id(String tag, int escolha){
