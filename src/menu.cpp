@@ -64,10 +64,12 @@ void Ler_Usuario() {
                 lcd.setCursor(0, 1);
                 lcd.print("Sucesso !       ");
                 erro_Usuario = 1;
+                digitalWrite(led_green, HIGH);
             }
 
             delay(3000);
             digitalWrite(led_red, LOW);
+            digitalWrite(led_green, LOW);
 
             sub_menu -=1;
             break;
@@ -106,6 +108,7 @@ void Baixa_Produto() {
     }
 }
 
+//talvez colocar um consultar estado ?
 void Reset() {
     switch(sub_menu) {
         case 1:
@@ -199,6 +202,7 @@ void Baixa_ou_Cadastra (String tipo){
                 }
                 lcd.setCursor(0, 1);
                 lcd.print("Sucesso !       ");
+                digitalWrite(led_green, HIGH);
             }
         }
 
@@ -207,4 +211,5 @@ void Baixa_ou_Cadastra (String tipo){
         sub_menu -=1;
     }
     digitalWrite(led_red, LOW);
+    digitalWrite(led_green, LOW);
 }

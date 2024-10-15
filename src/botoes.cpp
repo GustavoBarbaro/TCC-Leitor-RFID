@@ -11,9 +11,9 @@ void configurar_botoes() {
     pinMode(bt_b, INPUT_PULLUP);
 
     pinMode(led_red, OUTPUT);
-    pinMode(led_blue, OUTPUT);
+    pinMode(led_green, OUTPUT);
 
-    digitalWrite(led_blue, HIGH);
+    digitalWrite(led_green, LOW);
     digitalWrite(led_red, LOW);
 }
 
