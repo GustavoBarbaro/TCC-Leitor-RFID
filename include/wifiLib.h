@@ -20,6 +20,8 @@ String busca_id(String tag, int escolha);
 
 String cria_movimentacao (String idUsuario, String idProduto, String tipo);
 
+String checa_status (String idProduto);
+
 String extractNumber(String jsonString);
 
 String getCurrent_Date ();

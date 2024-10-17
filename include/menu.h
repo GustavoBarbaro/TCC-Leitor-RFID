@@ -18,6 +18,6 @@ void Cadastrar_Produto();
 void Baixa_Produto();
 void Reset();
 
-void Baixa_ou_Cadastra (String tipo);
+void Baixa_Cadastra_Status (String tipo);
 
 #endif

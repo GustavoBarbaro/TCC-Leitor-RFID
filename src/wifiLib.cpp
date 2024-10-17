@@ -128,6 +128,52 @@ String cria_movimentacao (String idUsuario, String idProduto, String tipo){
     return "";
 }
 
+String checa_status (String idProduto){
+
+
+    // Criação do buffer para armazenar o JSON
+    JsonDocument doc;
+
+    doc["produto_id"] = idProduto;
+
+    // Serializando o objeto para uma string JSON
+    String jsonBuffer;
+
+    serializeJson(doc, jsonBuffer);
+
+    //agora falta enviar a requisicao http
+
+    if (WiFi.status() == WL_CONNECTED){
+        HTTPClient http;
+
+        http.begin("http://192.168.1.124:8000/api/produto/status/");
+        
+
+        http.addHeader("Content-Type", "application/json");      // Cabeçalho da requisição
+
+        int httpResponseCode = http.POST(jsonBuffer);
+
+        if (httpResponseCode > 0){
+            String response = http.getString(); // Resposta do servidor
+            // Serial.println(httpResponseCode);
+            // Serial.println(response);
+            http.end();
+            return extractNumber(response);
+        }
+        else{
+            // Serial.print("Erro na requisição: ");
+            // Serial.println(httpResponseCode);
+            http.end();
+            return "Erro na requisicao";
+        }
+    } else {
+        return "Nao conectado ao WIFI";
+    }
+
+
+    return "";
+}
+
 
 String extractNumber(String jsonString) {
     //Esse codigo eh util para extrair toda a resposta do http

@@ -86,7 +86,7 @@ void Cadastrar_Produto() {
             break;
         case 2:
             
-            Baixa_ou_Cadastra("Cadastrar");
+            Baixa_Cadastra_Status("Cadastrar");
 
             break;
     }
@@ -102,7 +102,7 @@ void Baixa_Produto() {
             break;
         case 2:
             
-            Baixa_ou_Cadastra("Baixa");
+            Baixa_Cadastra_Status("Baixa");
 
             break;
     }
@@ -113,21 +113,20 @@ void Reset() {
     switch(sub_menu) {
         case 1:
             lcd.setCursor(0, 0);
-            lcd.print("<     Reset     ");
+            lcd.print("< Checa         ");
             lcd.setCursor(0, 1);
-            lcd.print("                ");
+            lcd.print("    Status      ");
             break;
         case 2:
-            lcd.setCursor(0, 0);
-            lcd.print("Aguardando      ");
-            lcd.setCursor(0, 1);
-            lcd.print("      leitura...");
+
+            Baixa_Cadastra_Status("Status");
+            
             break;
     }
 }
 
 
-void Baixa_ou_Cadastra (String tipo){
+void Baixa_Cadastra_Status (String tipo){
 
     if(erro_Usuario == 0){
         lcd.setCursor(0, 0);
@@ -168,13 +167,15 @@ void Baixa_ou_Cadastra (String tipo){
             digitalWrite(led_red, HIGH);
 
         }else {
-            //achou o ID do produto e do usuario, pode cadastrar ou dar baixa
+            //achou o ID do produto e do usuario, pode cadastrar ou dar baixa ou checar status
 
             if (tipo == "Cadastrar"){
                 movimentacao = cria_movimentacao (idUsuario, idProduto, "Entrada"); //esse entrada e saida sao os que vao na API
 
             } else if (tipo == "Baixa"){
                 movimentacao = cria_movimentacao (idUsuario, idProduto, "Saida");
+            } else if (tipo == "Status"){
+                movimentacao = checa_status (idProduto);
             }
 
             //Analisar as respostas
@@ -194,7 +195,7 @@ void Baixa_ou_Cadastra (String tipo){
             } else if (movimentacao == "\"Movimentacao criada com sucesso\"") {
                 lcd.setCursor(0, 0);
 
-                if (tipo == "Cadastrar"){
+                if (tipo == "Cadastrar"){//esse cadastrar eu mando na funcao
                     lcd.print("Cadastrado com  ");
 
                 } else if (tipo == "Baixa"){
